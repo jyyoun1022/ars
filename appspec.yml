@@ -1,0 +1,18 @@
+version: 0.0
+os: linux
+
+files:
+  - source:  /
+    destination: /home/ec2-user/jenkins
+    overwrite: yes
+
+hooks:
+  AfterInstall:
+    - location: stop.sh # 엔진엑스와 연결되어 있지 않은 스프링부트를 종료한다.
+      timeout: 60
+  ApplicationStart:
+    - location: start.sh # 엔진엑스와 연결되어 있지 않은 포트로 새 버전의 스프링부트를 시작한다.
+      timeout: 60
+  ValidateService:
+    - location: health.sh # 새 스프링부트가 정상적으로 실행됐는지 확인한다.
+      timeout: 60
